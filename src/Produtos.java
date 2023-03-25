@@ -1,13 +1,11 @@
-import java.util.Locale;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Produtos {
 
     public static void main(String[] args) {
-        char continua = 'S';
+        char continua;
         String produto,produtoCaro="",produtoBarato="";
-        double valorCompra,quantidade,desconto,novoValor=0,totalCompra,afterDesconto,maior=0,menor=999999999,somatoria=0,media;
+        double valorCompra,quantidade,desconto,novoValor,totalCompra,valorDesconto,maior=0,menor=999999999,somatoria=0,media;
         int codProduto,i = 0,j=0;
         Scanner input= new Scanner(System.in);
         do {
@@ -16,7 +14,7 @@ public class Produtos {
                 produto = input.nextLine();
                 System.out.print("Digite o preço do produto: ");
                 valorCompra = input.nextDouble();
-                afterDesconto = valorCompra;
+                valorDesconto = valorCompra;
                 if (valorCompra > maior){
                     maior = valorCompra;
                     produtoCaro = produto;
@@ -29,21 +27,22 @@ public class Produtos {
                 codProduto = input.nextInt();
                 if ((codProduto == 1 || codProduto == 3 || codProduto == 5) && (valorCompra >= 1000)){
                     desconto = 1.50;
-                    novoValor = (valorCompra*desconto)/100;
-                    System.out.println("Desconto de "+desconto+"% aplicado! Ficou R$: "+novoValor);
-                    afterDesconto = (valorCompra-novoValor);
+                    valorDesconto = (valorCompra*desconto)/100; // x=1000*15/100
+                    System.out.println("Desconto de "+desconto+"% aplicado! Ficou R$: "+valorDesconto);
+                    novoValor = (valorCompra-valorDesconto); //1000-15=985
                     j++;
+                } else {
+                    novoValor = valorCompra;
                 }
                 System.out.print("Digite a quantidade comprada: ");
-                quantidade = input.nextDouble();
-                totalCompra = afterDesconto*quantidade;
+                quantidade = input.nextDouble(); //5
+                totalCompra = novoValor*quantidade; // 985 x 5 = 4250
                 System.out.println("O total da compra ficou: R$"+totalCompra);
-                somatoria+=totalCompra;
+                somatoria+=totalCompra; // 4250
                 System.out.print("Deseja Continuar? S/N: ");
                 continua = input.next().toUpperCase().charAt(0);
                 input.nextLine();
         }while(continua != 'N');
-        if (continua == 'N'){
             System.out.println("O produto mais barato é: "+produtoBarato+" que custa: "+menor);
             System.out.println("O produto mais caro é: "+produtoCaro+" que custa: "+maior);
             System.out.println("O total da compra foi: R$"+somatoria);
@@ -57,10 +56,8 @@ public class Produtos {
                 System.out.println("Teve um desconto de:"+desconto+"%. O novo valor é: R$"+novoValor);
             }
             System.out.println("O numero de descontos especiais foi: "+j);
-            media=novoValor/i;
-            System.out.println("A media total das vendas foi: "+media);
+            media=somatoria/i;
+            System.out.println("A media total das vendas foi: R$"+media);
 
-
-        }
     }
 }
